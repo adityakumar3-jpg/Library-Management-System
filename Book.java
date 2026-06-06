@@ -1,64 +1,95 @@
-class Book {
+// Parent class
+class Item {
+    private String title;
+    private boolean isAvailable;
 
-    String title;
-    String author;
-    boolean isAvailable;
+    public Item(String title) {
+        this.title = title;
+        this.isAvailable = true;
+    }
 
-    Book(String t, String a) {
-        title = t;
-        author = a;
-        isAvailable = true;
+    // Encapsulation (getters & setters)
+    public String getTitle() {
+        return title;
+    }
+
+    public boolean isAvailable() {
+        return isAvailable;
+    }
+
+    public void setAvailable(boolean status) {
+        this.isAvailable = status;
     }
 }
 
 
+// Child class (Inheritance)
+class Book extends Item {
+    private String author;
+
+    public Book(String title, String author) {
+        super(title);
+        this.author = author;
+    }
+
+    public String getAuthor() {
+        return author;
+    }
+}
+
+
+// Library class
 class Library {
 
-    Book[] books = new Book[3];
+    private Book[] books = new Book[3];
 
-    Library() {
+    public Library() {
         books[0] = new Book("Java Basics", "James Gosling");
         books[1] = new Book("Data Structures", "Mark Allen");
         books[2] = new Book("Operating Systems", "Silberschatz");
     }
 
-    void displayBooks() {
+    public void displayBooks() {
         System.out.println("All Books:");
-        for (int i = 0; i < 3; i++) {
-            if (books[i].isAvailable == true) {
-                System.out.println(books[i].title + " - Available");
+        for (int i = 0; i < books.length; i++) {
+            if (books[i].isAvailable()) {
+                System.out.println(books[i].getTitle() + " - Available");
             } else {
-                System.out.println(books[i].title + " - Issued");
+                System.out.println(books[i].getTitle() + " - Issued");
             }
         }
     }
 
-    void issueBook(String name) {
-        for (int i = 0; i < 3; i++) {
-            if (books[i].title == name) {
-                if (books[i].isAvailable == true) {
-                    books[i].isAvailable = false;
+    public void issueBook(String name) {
+        for (int i = 0; i < books.length; i++) {
+            if (books[i].getTitle().equals(name)) {
+                if (books[i].isAvailable()) {
+                    books[i].setAvailable(false);
                     System.out.println(name + " issued successfully");
                 } else {
                     System.out.println(name + " is already issued");
                 }
+                return;
             }
         }
+        System.out.println("Book not found");
     }
 
-    void returnBook(String name) {
-        for (int i = 0; i < 3; i++) {
-            if (books[i].title == name) {
-                books[i].isAvailable = true;
+    public void returnBook(String name) {
+        for (int i = 0; i < books.length; i++) {
+            if (books[i].getTitle().equals(name)) {
+                books[i].setAvailable(true);
                 System.out.println(name + " returned successfully");
+                return;
             }
         }
+        System.out.println("Book not found");
     }
 }
 
 
+// Main class
 public class Main {
-
     public static void main(String[] args) {
 
         Library lib = new Library();
@@ -66,7 +97,6 @@ public class Main {
         lib.displayBooks();
 
         lib.issueBook("Java Basics");
-
         lib.issueBook("Java Basics");
 
         lib.displayBooks();
