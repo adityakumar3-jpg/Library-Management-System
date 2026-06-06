@@ -1,5 +1,5 @@
-// Parent class
-class Item {
+// Abstract Parent class (Abstraction)
+abstract class Item {
     private String title;
     private boolean isAvailable;
 
@@ -20,10 +20,13 @@ class Item {
     public void setAvailable(boolean status) {
         this.isAvailable = status;
     }
+
+    // Abstract method (must be implemented by child)
+    abstract void displayDetails();
 }
 
 
-// Child class (Inheritance)
+// Child class (Inheritance + Abstraction implementation)
 class Book extends Item {
     private String author;
 
@@ -34,6 +37,15 @@ class Book extends Item {
 
     public String getAuthor() {
         return author;
+    }
+
+    // Implementing abstract method
+    void displayDetails() {
+        if (isAvailable()) {
+            System.out.println(getTitle() + " by " + author + " - Available");
+        } else {
+            System.out.println(getTitle() + " by " + author + " - Issued");
+        }
     }
 }
 
@@ -52,11 +64,7 @@ class Library {
     public void displayBooks() {
         System.out.println("All Books:");
         for (int i = 0; i < books.length; i++) {
-            if (books[i].isAvailable()) {
-                System.out.println(books[i].getTitle() + " - Available");
-            } else {
-                System.out.println(books[i].getTitle() + " - Issued");
-            }
+            books[i].displayDetails(); // using abstraction
         }
     }
 
